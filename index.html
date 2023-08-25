@@ -8,7 +8,6 @@
 </head>
 
 <body>
-    <h1>Pause til 13:35</h1>
     <div id="app"></div>
 
     <script>
@@ -18,29 +17,61 @@
         let loggedInAs = null;
         let error = null;
         let currentPage;
+        let firstName = null;
+        let imageUrl = null;
 
         // view
         updateView();
         function updateView() {
             if (loggedInAs == null) updateViewLogin();
-            else if(currentPage == 'editProfile') updateViewEditProfile();
+            else if (currentPage == 'editProfile') updateViewEditProfile();
             else updateViewMain();
         }
 
-        function updateViewMain(){
+        function updateViewMain() {
             document.getElementById('app').innerHTML = /*HTML*/`
-                <h1>Meny</h1>
-                <button onclick="goToPage('editProfile')">Redigere profil</button>
-                <button onclick="logOut()">Logg ut</button>
+                <h1>Velkommen${firstName == null ? '!' : ', ' + firstName}<h1>
+                ${createMenuHTML()}
             `;
         }
 
-        function updateViewEditProfile(){
+        function createMenuHTML() {
+            let imageHtml = '';
+            if (imageUrl != null) {
+                imageHtml = `<img src="${imageUrl}" style="width: 50px; height: 50px;"/>`;
+            }
+            return /*HTML*/`
+                <button onclick="goToPage('editProfile')">Redigere profil</button>
+                <button onclick="logOut()">
+                    ${imageHtml}
+                    Logg ut</button>
+            `;
+        }
+
+        function updateViewEditProfile() {
             document.getElementById('app').innerHTML = /*HTML*/`
                 <h1>Redigere profil</h1>
                 <button onclick="goToPage()">Meny</button>
+
+                <div style="display: grid; grid-template-columns: 100px 200px">
+                    ${createInputField('Fornavn', 'firstName', 'text')}
+                    ${createInputField('Bilde-URL', 'imageUrl', 'text')}
+                </div>    
+                <button onclick="goToPage()">Oppdatere</button>             
             `;
         }
+
+        function createInputField(label, modelFieldName, type) {
+            return /*HTML*/`
+                <div>${label}:</div>
+                <input 
+                    type="${type}"
+                    oninput="${modelFieldName} = this.value" 
+                    value="${eval(modelFieldName) || ''}"
+                    />
+            `;
+        }
+
 
         function updateViewLogin() {
             document.getElementById('app').innerHTML = /*HTML*/`
@@ -76,12 +107,12 @@
             updateView();
         }
 
-        function goToPage(pageName){
+        function goToPage(pageName) {
             currentPage = pageName;
             updateView();
         }
 
-        function logOut(){
+        function logOut() {
             loggedInAs = null;
             updateView();
         }
