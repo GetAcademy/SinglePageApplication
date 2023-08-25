@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    Vise verdi i input-felt<br/>
+    Flere sider<br/>
+    Funksjonalitet med MVC</body><br>
+    <h1>Pause til 13:04</h1>
+    <div id="app"></div>
+
+    <script>
+        // model
+        let userNameInput;
+        let passwordInput;
+        let loggedInAs = null;
+        let error = null;
+
+        // view
+        updateView();
+        function updateView() {
+            document.getElementById('app').innerHTML = /*HTML*/`
+                <div style="display: grid; grid-template-columns: 100px 200px">
+                    <div>Brukernavn:</div>
+                    <input oninput="userNameInput = this.value" type="text"/>
+                    <div>Passord:</div>
+                    <input oninput="passwordInput = this.value" type="password"/>
+                    </div>    
+                <button onclick="logIn()">Logg inn</button>
+                <br/>Du er logget inn som ${loggedInAs || '(IKKE)'}
+                <div style="color: red">${error || ''}</div>
+            `;
+        }
+
+        // controller
+        function logIn() {
+            if(userNameInput == 'terje' && passwordInput == 'hemmelig'){
+                loggedInAs = 'terje';
+            } else {
+                error = 'Ugyldig brukernavn eller passord';
+            }
+            updateView();
+        }
+
+    </script>
+
+    <!-- <ol>
+        <li>MVC-innloggingsskjema, inkl. <tt>this</tt></li>
+        <li>SPA - Flere skjermbilder - redigere profil</li>
+        <li>Innebygd for string => tallpuslespill</li>
+    </ol>
+    Og ikke bare det, masse repetisjon på funksjoner med og uten
+    parametre og returverdi! -->
+</body>
+
+</html>
